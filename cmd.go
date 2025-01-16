@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	bolt "go.etcd.io/bbolt"
 	"github.com/gobwas/glob"
+	bolt "go.etcd.io/bbolt"
 )
 
 func del(args ...string) (res interface{}, err error) {
@@ -176,6 +176,10 @@ func get(args ...string) (res interface{}, err error) {
 }
 
 func set(args ...string) (res interface{}, err error) {
+	// fmt.Println("Args:")
+	// for _, arg := range args {
+	// 	fmt.Println("  ", arg)
+	// }
 	argsLen := len(args)
 	if argsLen < 3 {
 		return nil, fmt.Errorf("wrong number of arguments for '%s' command", "set")
@@ -400,7 +404,8 @@ func formatListToStr(list []string) string {
 // a) "10"\n
 // b) "20"\n
 // c)\n
-//     c1) "30"
+//
+//	c1) "30"
 func formatMapToStr(collection map[string]interface{}, prefix string) string {
 	formatted := make([]string, len(collection))
 	keys := make([]string, len(collection))

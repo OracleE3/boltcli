@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 
@@ -24,6 +25,17 @@ func getHomeDir() string {
 		env = "USERPROFILE"
 	}
 	return os.Getenv(env)
+}
+
+// Function to tokenize the input string with quoted string support
+func tokenize(input string) ([]string, error) {
+	// Regular expression to match quoted strings or words
+	re := regexp.MustCompile(`"([^"]*)"|'([^']*)'|\S+`)
+
+	// Find all matches and return as a slice
+	matches := re.FindAllString(input, -1)
+
+	return matches, nil
 }
 
 // StartCli starts the repl environment
@@ -58,9 +70,12 @@ func StartCli() {
 			break
 		}
 
-		fields := strings.Fields(strings.TrimSpace(line))
+		fields, _ := tokenize(strings.TrimSpace(line))
 		if len(fields) == 0 {
 			continue
+		}
+		for i, f := range fields {
+			fields[i] = strings.Trim(f, "'")
 		}
 
 		result := ExecCmdInCli(fields[0], fields[1:]...)

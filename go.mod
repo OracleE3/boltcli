@@ -1,4 +1,4 @@
-module github.com/spacewander/boltcli
+module github.com/OraclE3/boltcli
 
 go 1.12
 
